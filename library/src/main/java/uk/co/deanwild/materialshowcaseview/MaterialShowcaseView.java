@@ -203,10 +203,10 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
-        /**
-         * If we're being detached from the window without the mWasDismissed flag then we weren't purposefully dismissed
-         * Probably due to an orientation change or user backed out of activity.
-         * Ensure we reset the flag so the showcase display again.
+        /*
+          If we're being detached from the window without the mWasDismissed flag then we weren't purposefully dismissed
+          Probably due to an orientation change or user backed out of activity.
+          Ensure we reset the flag so the showcase display again.
          */
         if (!mWasDismissed && mSingleUse && mPrefsManager != null) {
             mPrefsManager.resetShowcase();
@@ -252,7 +252,7 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
             mListeners = null;
         }
 
-        /**
+        /*
          * internal listener used by sequence for storing progress within the sequence
          */
         if (mDetachedListener != null) {
@@ -304,7 +304,7 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
         if (mTarget != null) {
 
-            /**
+            /*
              * If we're on lollipop then make sure we don't draw over the nav bar
              */
             if (!mRenderOverNav && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -376,8 +376,8 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
                 layoutParamsChanged = true;
             }
 
-            /**
-             * Only apply the layout params if we've actually changed them, otherwise we'll get stuck in a layout loop
+            /*
+              Only apply the layout params if we've actually changed them, otherwise we'll get stuck in a layout loop
              */
             if (layoutParamsChanged)
                 mContentBox.setLayoutParams(contentLP);
@@ -387,8 +387,8 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
     }
 
     void updateToolTip() {
-        /**
-         * Adjust tooltip gravity if needed
+        /*
+          Adjust tooltip gravity if needed
          */
         if (toolTip != null) {
 
@@ -480,15 +480,33 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
         }
     }
 
+    private void setTitleTextSize(float textSize) {
+        if (mTitleTextView != null) {
+            mTitleTextView.setTextSize(textSize);
+        }
+    }
+
     private void setContentTextColor(int textColour) {
         if (mContentTextView != null) {
             mContentTextView.setTextColor(textColour);
         }
     }
 
+    private void setContentTextSize(float textSize) {
+        if (mContentTextView != null) {
+            mContentTextView.setTextSize(textSize);
+        }
+    }
+
     private void setDismissTextColor(int textColour) {
         if (mDismissButton != null) {
             mDismissButton.setTextColor(textColour);
+        }
+    }
+
+    private void setDismissTextSize(float textSize) {
+        if (mDismissButton != null) {
+            mDismissButton.setTextSize(textSize);
         }
     }
 
@@ -795,13 +813,28 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
             return this;
         }
 
+        public Builder setTitleTextSize(float textSize) {
+            showcaseView.setTitleTextSize(textSize);
+            return this;
+        }
+
         public Builder setContentTextColor(int textColour) {
             showcaseView.setContentTextColor(textColour);
             return this;
         }
 
+        public Builder setContentTextSize(float textSize) {
+            showcaseView.setContentTextSize(textSize);
+            return this;
+        }
+
         public Builder setDismissTextColor(int textColour) {
             showcaseView.setDismissTextColor(textColour);
+            return this;
+        }
+
+        public Builder setDismissTextSize(float textSize) {
+            showcaseView.setDismissTextSize(textSize);
             return this;
         }
 
@@ -959,8 +992,8 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
      */
     public boolean show(final Activity activity) {
 
-        /**
-         * if we're in single use mode and have already shot our bolt then do nothing
+        /*
+          if we're in single use mode and have already shot our bolt then do nothing
          */
         if (mSingleUse) {
             if (mPrefsManager.hasFired()) {
@@ -1016,8 +1049,8 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
     public void hide() {
 
-        /**
-         * This flag is used to indicate to onDetachedFromWindow that the showcase view was dismissed purposefully (by the user or programmatically)
+        /*
+          This flag is used to indicate to onDetachedFromWindow that the showcase view was dismissed purposefully (by the user or programmatically)
          */
         mWasDismissed = true;
 
@@ -1031,8 +1064,8 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
     public void skip() {
 
-        /**
-         * This flag is used to indicate to onDetachedFromWindow that the showcase view was skipped purposefully (by the user or programmatically)
+        /*
+          This flag is used to indicate to onDetachedFromWindow that the showcase view was skipped purposefully (by the user or programmatically)
          */
         mWasSkipped = true;
 
