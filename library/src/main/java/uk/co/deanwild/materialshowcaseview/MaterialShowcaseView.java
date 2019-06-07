@@ -142,8 +142,9 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
         mSkipButton = contentView.findViewById(R.id.tv_skip);
         mSkipButton.setOnClickListener(this);
 
-        View closeButton = inflater.inflate(R.layout.close_button, this, true);
+        View closeButton = inflater.inflate(R.layout.close_button, this, false);
         closeButton.setOnClickListener(this);
+        addView(closeButton);
     }
 
 
@@ -237,8 +238,6 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
 
     private void notifyOnDisplayed() {
-
-
         if (mListeners != null) {
             for (IShowcaseListener listener : mListeners) {
                 listener.onShowcaseDisplayed(this);
