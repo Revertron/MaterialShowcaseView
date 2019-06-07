@@ -131,7 +131,8 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
         setVisibility(INVISIBLE);
 
 
-        View contentView = LayoutInflater.from(getContext()).inflate(R.layout.showcase_content, this, true);
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        View contentView = inflater.inflate(R.layout.showcase_content, this, true);
         mContentBox = contentView.findViewById(R.id.content_box);
         mTitleTextView = contentView.findViewById(R.id.tv_title);
         mContentTextView = contentView.findViewById(R.id.tv_content);
@@ -140,6 +141,9 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
         mSkipButton = contentView.findViewById(R.id.tv_skip);
         mSkipButton.setOnClickListener(this);
+
+        View closeButton = inflater.inflate(R.layout.close_button, this, true);
+        closeButton.setOnClickListener(this);
     }
 
 
@@ -263,13 +267,13 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
     /**
      * Dismiss button clicked
      *
-     * @param v
+     * @param view clicked view
      */
     @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.tv_dismiss) {
+    public void onClick(View view) {
+        if (view.getId() == R.id.tv_dismiss || view.getId() == R.id.iv_close) {
             hide();
-        } else if (v.getId() == R.id.tv_skip) {
+        } else if (view.getId() == R.id.tv_skip) {
             skip();
         }
     }
