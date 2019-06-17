@@ -24,7 +24,7 @@ public class PrefsManager {
     /***
      * METHODS FOR INDIVIDUAL SHOWCASE VIEWS
      */
-    boolean hasFired() {
+    public boolean hasFired() {
         int status = getSequenceStatus();
         return (status == SEQUENCE_FINISHED);
     }
@@ -61,6 +61,18 @@ public class PrefsManager {
     public static void resetAll(Context context) {
         SharedPreferences internal = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         internal.edit().clear().apply();
+    }
+
+    /**
+     * Check if some showcase was fired (shown)
+     *
+     * @param context android context
+     * @param showcaseID showcase id
+     * @return True if this showcase was shown, False otherwise
+     */
+    public static boolean hasFired(Context context, String showcaseID) {
+        PrefsManager prefsManager = new PrefsManager(context, showcaseID);
+        return prefsManager.hasFired();
     }
 
     public void close() {
