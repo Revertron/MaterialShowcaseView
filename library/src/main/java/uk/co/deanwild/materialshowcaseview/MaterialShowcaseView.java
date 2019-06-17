@@ -19,6 +19,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -312,14 +313,27 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
              */
             if (!mRenderOverNav && Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-
-                mBottomMargin = getSoftButtonsBarSizePort();
-
+                int rotation = ((Activity) getContext()).getWindowManager().getDefaultDisplay().getRotation();
+                int margin = getSoftButtonsBarSizePort();
 
                 FrameLayout.LayoutParams contentLP = (LayoutParams) getLayoutParams();
 
-                if (contentLP != null && contentLP.bottomMargin != mBottomMargin)
-                    contentLP.bottomMargin = mBottomMargin;
+                if (contentLP != null) {
+                    switch (rotation) {
+                        case Surface.ROTATION_90:
+                            contentLP.rightMargin = margin;
+                            break;
+                        case Surface.ROTATION_0:
+                            contentLP.bottomMargin = margin;
+                            break;
+                        case Surface.ROTATION_180:
+                            contentLP.topMargin = margin;
+                            break;
+                        case Surface.ROTATION_270:
+                            contentLP.leftMargin = margin;
+                            break;
+                    }
+                }
             }
 
             // apply the target position
@@ -1128,14 +1142,12 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
 
     public int getSoftButtonsBarSizePort() {
-
         int resourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
         if (resourceId > 0) {
             return getResources().getDimensionPixelSize(resourceId);
         }
 
         return 0;
-
     }
 
     private void setRenderOverNavigationBar(boolean mRenderOverNav) {
