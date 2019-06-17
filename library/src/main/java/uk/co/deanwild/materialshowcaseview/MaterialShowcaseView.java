@@ -80,7 +80,6 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
     private long mFadeDurationInMillis = DEFAULT_FADE_TIME;
     private Handler mHandler;
     private long mDelayInMillis = DEFAULT_DELAY;
-    private int mBottomMargin = 0;
     private boolean mSingleUse = false; // should display only once
     private PrefsManager mPrefsManager; // used to store state doe single use mode
     List<IShowcaseListener> mListeners; // external listeners who want to observe when we show and dismiss
@@ -308,6 +307,7 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
         if (mTarget != null) {
 
+            FrameLayout.LayoutParams contentLP = (LayoutParams) getLayoutParams();
             /*
              * If we're on lollipop then make sure we don't draw over the nav bar
              */
@@ -315,8 +315,6 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
                 int rotation = ((Activity) getContext()).getWindowManager().getDefaultDisplay().getRotation();
                 int margin = getSoftButtonsBarSizePort();
-
-                FrameLayout.LayoutParams contentLP = (LayoutParams) getLayoutParams();
 
                 if (contentLP != null) {
                     switch (rotation) {
@@ -338,13 +336,13 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
             // apply the target position
             Point targetPoint = mTarget.getPoint();
+            targetPoint.x -= contentLP != null ? contentLP.leftMargin : 0;
             Rect targetBounds = mTarget.getBounds();
             setPosition(targetPoint);
 
             // now figure out whether to put content above or below it
             int height = getMeasuredHeight();
             int midPoint = height / 2;
-            int yPos = targetPoint.y;
 
             int radius = Math.max(targetBounds.height(), targetBounds.width()) / 2;
             if (mShape != null) {
@@ -354,6 +352,7 @@ public class MaterialShowcaseView extends FrameLayout implements View.OnTouchLis
 
             // If there's no custom gravity in place, we'll do automatic gravity calculation.
             if (!mHasCustomGravity) {
+                int yPos = targetPoint.y;
                 if (yPos > midPoint) {
                     // target is in lower half of screen, we'll sit above it
                     mContentTopMargin = 0;
